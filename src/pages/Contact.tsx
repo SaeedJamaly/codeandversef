@@ -51,8 +51,10 @@ const Contact = () => {
     setError('');
     setSuccessMessage('');
     setIsSubmitting(true);
+
+    const backendUrl = process.env.REACT_APP_BACKEND_URL || 'LBback-189959005.us-east-1.elb.amazonaws.com';
     try {
-      const response = await axios.post('http://localhost:5000/contact', formData);
+      const response = await axios.post(`${backendUrl}/contact`, formData);
       setSuccessMessage(response.data.message);
     } catch (err) {
       setError('Something went wrong, please try again.');
