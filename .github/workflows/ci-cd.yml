@@ -1,0 +1,40 @@
+name: Frontend CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Log in to Amazon ECR
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build Docker Image for Frontend
+        run: |
+          docker build -t codeandverse-frontend ./  # Dockerfile path
+
+      - name: Tag Docker Image for ECR
+        run: |
+          docker tag codeandverse-frontend:latest 767398107655.dkr.ecr.us-east-1.amazonaws.com/codeandverse-frontend:latest
+
+      - name: Push Docker Image to ECR
+        run: |
+          docker push 767398107655.dkr.ecr.us-east-1.amazonaws.com/codeandverse-frontend:latest
+
+      - name: Deploy to ECS
+        run: |
+          aws ecs update-service \
+            --cluster codeandverse-front-cluster \
+            --service codeandverse-frontend-service \
+            --force-new-deployment \
+            --region ${{ secrets.AWS_REGION }}
