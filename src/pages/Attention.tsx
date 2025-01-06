@@ -46,7 +46,7 @@ const Attention = () => {
           {/* Content Section */}
           <Paper sx={styles.contentPaper}>
                 <Typography variant="body1" sx={styles.text}>
-                    I am writing this note, briefly reading the paper Attention is All You Need. It is not completed yet. 
+                    I am writing this note, briefly reading the paper Attention is All You Need. It is not completed yet. (Update 6 Jan, 2025) 
                 </Typography>
           </Paper>
 
